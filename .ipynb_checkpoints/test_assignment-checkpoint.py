@@ -1,17 +1,15 @@
 import io
 import sys
 import pytest
-# import assignment  # Assumes the student's solution is in assignment.py
-from starter_code import while_loop, for_loop_continue, number_classification, multiplication_table
-
+import assignment  # Assumes the student's solution is in assignment.py
 
 import nbconvert
 import io
 
 def notebook_to_python(notebook_path):
     """Convert Jupyter notebook to Python script"""
-    starter_code = nbconvert.PythonExporter()
-    python_code, _ = starter_code.from_filename(notebook_path)
+    exporter = nbconvert.PythonExporter()
+    python_code, _ = exporter.from_filename(notebook_path)
     return python_code
 
 # In test file
@@ -20,7 +18,7 @@ import sys
 
 def import_notebook_module(notebook_path):
     """Dynamically import notebook as a module"""
-    module_name = 'starter_code'
+    module_name = 'assignment'
     spec = importlib.util.spec_from_loader(module_name, loader=None)
     module = importlib.util.module_from_spec(spec)
     sys.modules[module_name] = module
@@ -32,11 +30,11 @@ def import_notebook_module(notebook_path):
     return module
 
 # Then use in tests
-starter_code = import_notebook_module('starter_code.ipynb')
+assignment = import_notebook_module('assignment.ipynb')
 
 def test_while_loop_even_numbers(capsys):
     """Test the while loop for printing even numbers up to 16"""
-    starter_code.while_loop()
+    assignment.while_loop()
     captured = capsys.readouterr().out.strip().split('\n')
     
     # Expected output: even numbers from 0 to 16
@@ -48,7 +46,7 @@ def test_while_loop_even_numbers(capsys):
 
 def test_for_loop_skip_divisible_by_3(capsys):
     """Test for loop that skips numbers divisible by 3"""
-    starter_code.for_loop_continue()
+    assignment.for_loop_continue()
     captured = capsys.readouterr().out.strip().split('\n')
     
     # Expected numbers: 1,2,4,5,7,8,10,11,13,14
@@ -72,7 +70,7 @@ def test_number_classification():
         
         # Call the function
         try:
-            starter_code.number_classification()
+            assignment.number_classification()
         finally:
             # Restore stdin and stdout
             sys.stdin = old_stdin
@@ -87,7 +85,7 @@ def test_number_classification():
 
 def test_multiplication_table(capsys):
     """Test nested loops multiplication table"""
-    starter_code.multiplication_table()
+    assignment.multiplication_table()
     captured = capsys.readouterr().out.strip().split('\n')
     
     # Check total number of lines (5x5 = 25 lines)
